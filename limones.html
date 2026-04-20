@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Juego Cazando - Edición Pro</title>
+    
+    <!-- Google Fonts: Tipografía retro + UI moderna -->
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="limones.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+</head>
+<body onload="iniciarJuego()" style="background: url('./back.png');" class="text-white">
+    <div class="main-container" >
+        <h1>JUEGO CAZANDO</h1>
+        <div class="game-wrapper">
+            <canvas id="areaJuego" width="500" height="500"  style="border: 3px solid #000 !important"></canvas>
+            <p id="mensaje">💡 Usa las flechas del teclado ▲ ◀ ▼ ▶ para mover al gato</p>
+        </div>
+
+       
+
+        <!-- Controles táctiles / D-Pad -->
+        <div class="row gap-2 justify-content-center mt-3">
+            <button class="btn btn-info" onclick="moverArriba()">▲</button>
+            <button class="btn btn-info" onclick="moverAbajo()">▼</button>
+          </div>
+        <div class="row gap-2 justify-content-center mt-3">
+          <button class="btn btn-info" onclick="moverIzquierda()">◀</button>
+          <button class="btn btn-info" onclick="moverDerecha()">▶</button>
+        </div>
+
+    </div>
+
+    <!-- 🎯 Notificación flotante (aparece al comer) -->
+    <div id="notificacion" class="notificacion"></div>
+
+    <!-- 🏆 Modal de fin de juego (victoria o derrota) -->
+    <div>
+      <div id="modalFinJuego" class="m-2 card">
+        <div class="card-body">
+            <h2 id="tituloModal"></h2>
+            <p id="mensajeModal"></p>
+            <button onclick="cerrarModalYReiniciar()" class="btn btn-outline-primary">🔄 Jugar de Nuevo</button>
+        </div>
+      </div>
+      <div class="card bg-transparent border-0 mt-5">
+        <div class="card-body w-100 text-center">
+          <button class="btn btn-danger mt-2" onclick="reiniciarJuego()">REINICIAR PARTIDA</button>
+        </div>
+      </div>
+       <!-- Panel de estadísticas -->
+        <div class="card bg-transparent border-0 text-white" style="border: 1px solid #000 !important">
+            <div class="stat-box">
+                <label class="text-white fw-bold">PUNTOS:</label>
+                <span id="puntos">0</span>
+            </div>
+            <div class="stat-box">
+                <label class="text-white fw-bold">TIEMPO:</label>
+                <span id="tiempo">10</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="utils.js"></script>
+    <script src="limones.js"></script>
+</body>
+</html>
