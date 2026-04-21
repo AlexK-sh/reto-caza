@@ -4,7 +4,7 @@ let gatoY = 0;
 let comidaX = 0;
 let comidaY = 0;
 let puntaje = 0;
-let tiempo = 10;
+let tiempo = 15;
 let intervaloTiempo;
 let juegoTerminado = false;
 let hintMostrada = false; // Controla si el mensaje de ayuda ya se ocultó
@@ -112,7 +112,7 @@ function detectarColision() {
         }
 
         // ✅ Reiniciar tiempo al comer
-        tiempo = 10;
+        tiempo = 15;
         mostrarEnSpan("tiempo", tiempo);
 
         // 🔄 Generar comida en posición VÁLIDA (nunca encima del gato)
@@ -150,7 +150,7 @@ function reiniciarJuego() {
     if (mensaje) mensaje.classList.remove("hint-oculta");
 
     puntaje = 0;
-    tiempo = 10;
+    tiempo = 15;
     mostrarEnSpan("puntos", puntaje);
     mostrarEnSpan("tiempo", tiempo);
 
