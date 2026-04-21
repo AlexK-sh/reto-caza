@@ -10,6 +10,11 @@ let timeRest = 15;
 let juegoTerminado = false;
 let hintMostrada = false; // Controla si el mensaje de ayuda ya se ocultó
 
+// 🔹 SPRITES
+let gatoSprites = {};
+let comidaSprite;
+let gatoSpriteActual = 'idle';
+
 // 🔹 CONSTANTES
 const ANCHO_GATO = 50;
 const ALTO_GATO = 50;
@@ -21,6 +26,43 @@ const MOVER_GATO = 10;
 const CANVAS = document.getElementById("areaJuego");
 const CTX = CANVAS.getContext("2d");
 
+// 🔹 CARGAR SPRITES
+function cargarSprites() {
+    return new Promise((resolve) => {
+        let loaded = 0;
+        const total = 6; // 5 sprites del gato + 1 comida
+
+        const checkLoaded = () => {
+            loaded++;
+            if (loaded === total) resolve();
+        };
+
+        gatoSprites.idle = new Image();
+        gatoSprites.idle.onload = checkLoaded;
+        gatoSprites.idle.src = 'assets/gato_idle.png';
+
+        gatoSprites.up = new Image();
+        gatoSprites.up.onload = checkLoaded;
+        gatoSprites.up.src = 'assets/gato_up.png';
+
+        gatoSprites.down = new Image();
+        gatoSprites.down.onload = checkLoaded;
+        gatoSprites.down.src = 'assets/gato_down.png';
+
+        gatoSprites.left = new Image();
+        gatoSprites.left.onload = checkLoaded;
+        gatoSprites.left.src = 'assets/gato_left.png';
+
+        gatoSprites.right = new Image();
+        gatoSprites.right.onload = checkLoaded;
+        gatoSprites.right.src = 'assets/gato_right.png';
+
+        comidaSprite = new Image();
+        comidaSprite.onload = checkLoaded;
+        comidaSprite.src = 'assets/comida.png';
+    });
+}
+
 // 🔹 FUNCIONES DE DIBUJO
 function graficarRectangulo(x, y, ancho, alto, color) {
     CTX.fillStyle = color;
@@ -28,15 +70,26 @@ function graficarRectangulo(x, y, ancho, alto, color) {
 }
 
 function graficarGato() {
-    graficarRectangulo(gatoX, gatoY, ANCHO_GATO, ALTO_GATO, "orange");
+    if (gatoSprites[gatoSpriteActual]) {
+        CTX.drawImage(gatoSprites[gatoSpriteActual], gatoX, gatoY, ANCHO_GATO, ALTO_GATO);
+    } else {
+        // Fallback a rectángulo si no se carga
+        graficarRectangulo(gatoX, gatoY, ANCHO_GATO, ALTO_GATO, "orange");
+    }
 }
 
 function graficarComida() {
-    graficarRectangulo(comidaX, comidaY, ANCHO_COMIDA, ALTO_COMIDA, "green");
+    if (comidaSprite) {
+        CTX.drawImage(comidaSprite, comidaX, comidaY, ANCHO_COMIDA, ALTO_COMIDA);
+    } else {
+        graficarRectangulo(comidaX, comidaY, ANCHO_COMIDA, ALTO_COMIDA, "green");
+    }
 }
 
 // 🔹 INICIALIZACIÓN
-function iniciarJuego() {
+async function iniciarJuego() {
+    await cargarSprites();
+
     // 1. Posicionar gato
     gatoX = generarAleatorio(0, CANVAS.width - ANCHO_GATO);
     gatoY = generarAleatorio(0, CANVAS.height - ALTO_GATO);
@@ -59,6 +112,7 @@ function limpiarCanvas() {
 
 // 🔹 MOVIMIENTO
 function moverIzquierda() {
+    gatoSpriteActual = 'left';
     gatoX -= MOVER_GATO;
     limpiarCanvas();
     graficarGato();
@@ -66,6 +120,7 @@ function moverIzquierda() {
     detectarColision();
 }
 function moverDerecha() {
+    gatoSpriteActual = 'right';
     gatoX += MOVER_GATO;
     limpiarCanvas();
     graficarGato();
@@ -73,6 +128,7 @@ function moverDerecha() {
     detectarColision();
 }
 function moverArriba() {
+    gatoSpriteActual = 'up';
     gatoY -= MOVER_GATO;
     limpiarCanvas();
     graficarGato();
@@ -80,6 +136,7 @@ function moverArriba() {
     detectarColision();
 }
 function moverAbajo() {
+    gatoSpriteActual = 'down';
     gatoY += MOVER_GATO;
     limpiarCanvas();
     graficarGato();
@@ -146,6 +203,7 @@ function reiniciarJuego() {
     clearInterval(intervaloTiempo);
     juegoTerminado = false;
     hintMostrada = false; // 🔄 Reinicia estado del hint visual
+    gatoSpriteActual = 'idle'; // 🔄 Reinicia sprite del gato
 
     // Restaurar mensaje de ayuda
     const mensaje = document.getElementById("mensaje");
