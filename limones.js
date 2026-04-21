@@ -6,6 +6,7 @@ let comidaY = 0;
 let puntaje = 0;
 let tiempo = 15;
 let intervaloTiempo;
+let timeRest = 15;
 let juegoTerminado = false;
 let hintMostrada = false; // Controla si el mensaje de ayuda ya se ocultó
 
@@ -112,7 +113,8 @@ function detectarColision() {
         }
 
         // ✅ Reiniciar tiempo al comer
-        tiempo = 15;
+        tiempo = timeRest;
+        timeRest = timeRest - 1
         mostrarEnSpan("tiempo", tiempo);
 
         // 🔄 Generar comida en posición VÁLIDA (nunca encima del gato)
